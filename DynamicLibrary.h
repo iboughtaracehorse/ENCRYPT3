@@ -8,6 +8,8 @@ extern "C" {
 #endif
 
 	__declspec(dllexport) char* encrypt(const char* rawText, int key);
+	__declspec(dllexport) char* decrypt(const char* rawText, int key);
+
 
 #ifdef __cplusplus
 }
