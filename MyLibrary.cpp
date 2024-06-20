@@ -11,15 +11,15 @@ extern "C" __declspec(dllexport) char* encrypt(const char* rawText, int key) {
     for (size_t i = 0; i < textLen; i++) {
         char curChar = rawText[i];
 
-        if (isalpha(curChar)) { 
-            if (curChar + key > alphabetSize + 'a') {
-                result[i] = curChar - alphabetSize + key;
-            }
-            else {
-                result[i] = curChar + key;
-            }
-
+        if (islower(curChar)) {
+            result[i] = 'a' + (curChar - 'a' + key) % alphabetSize;
         }
+        else if (isupper(curChar)) {
+            result[i] = 'A' + (curChar - 'A' + key) % alphabetSize;
+        }
+     
+
+        
         else {
             result[i] = curChar;
         }
@@ -38,11 +38,11 @@ extern "C" __declspec(dllexport) char* decrypt(const char* rawText, int key) {
     for (size_t i = 0; i < textLen; i++) {
         char curChar = rawText[i];
 
-        if (isalpha(curChar)) { 
-            if (curChar - key < alphabetSize + 'a') {
-                result[i] = curChar +alphabetSize - key;
-            }
-            result[i] = curChar - key;
+        if (islower(curChar)) {
+            result[i] = 'a' + (curChar - 'a' - key + alphabetSize) % alphabetSize;
+        }
+        else if (isupper(curChar)) {
+            result[i] = 'A' + (curChar - 'A' - key + alphabetSize) % alphabetSize;
         }
         else {
             result[i] = curChar;
