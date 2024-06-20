@@ -2,23 +2,62 @@
 #include "DynamicLibrary.h"
 
 int main() {
-    char* rawText;
     size_t initialSize = 256;
-    rawText = new char[256];
-    strcpy_s(rawText, initialSize, "abc");
+    char* rawText = new char[256];
+
+    char* buffer = new char[256];
+    char* mode = new char[20];
     int key = 1;
 
-    char* encrypted = encrypt(rawText, key);
-    std::cout << encrypted << std::endl;
+    std::cout << "Enter a mode: ";
+    std::cin >> mode;
 
-   char* decrypted = decrypt(rawText, key);
-   std::cout << decrypted << std::endl;
+    std::cout << "Enter a text: ";
+    std::cin.ignore();
+    std::cin.getline(rawText, initialSize);
 
+    std::cout << "Enter a key: ";
+    std::cin >> key;
 
-    delete[] encrypted;
-    encrypted = nullptr;
-    delete[] decrypted;
-    decrypted = nullptr;
+   
+    if (strcmp(mode, "encrypt") == 0) {
+        char* encrypted = encrypt(rawText, key);
+        std::cout << "Encrypted: " << encrypted << std::endl;
+
+        strcpy_s(buffer,initialSize, encrypted);
+
+        delete[] encrypted;
+        encrypted = nullptr;
+    }
+    else if (strcmp(mode, "decrypt") == 0) {
+        int decryptMode;
+        char* decrypted = new char[256];
+        std::cout << "To decrypt text from buffer enter 1\n To decrypt new text enter 2: ";
+        std::cin >> decryptMode;
+
+        if (decryptMode == 1) {
+            char* decrypted = decrypt(buffer, key);
+            std::cout << "Decrypted: " << decrypted << std::endl;
+
+        }
+        else if (decryptMode == 2) {
+            char* decrypted = decrypt(rawText, key);
+            std::cout << "Decrypted: " << decrypted << std::endl;
+        }
+
+        
+
+        delete[] decrypted;
+        decrypted = nullptr;
+    }
+    else {
+        std::cerr << "Invalid mode!" << std::endl;
+    }
+
+    delete[] rawText;
+    rawText = nullptr;
+    delete[] mode;
+    mode = nullptr;
 
     return 0;
 }
