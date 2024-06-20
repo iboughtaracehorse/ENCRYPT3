@@ -4,7 +4,6 @@
 int main() {
     size_t initialSize = 256;
     char* rawText = new char[256];
-
     char* buffer = new char[256];
     char* mode = new char[20];
     int key = 1;
@@ -15,7 +14,8 @@ int main() {
         std::cin >> mode;
 
         if (strcmp(mode, "exit") == 0) {
-            return 0;
+            end = true;
+            continue;
         }
 
         if (strcmp(mode, "encrypt") == 0) {
@@ -30,7 +30,6 @@ int main() {
             std::cout << "Encrypted: " << encrypted << std::endl;
 
             strcpy_s(buffer, initialSize, encrypted);
-
             delete[] encrypted;
             encrypted = nullptr;
         }
@@ -42,17 +41,15 @@ int main() {
             std::cin >> decryptMode;
 
             if (decryptMode == 1) {
-
                 if (buffer[0] == '\0') {
-                    std::cerr << "Buffer is empty! No text to decrypt." << std::endl;
+                    return 0;
                 }
                 else {
                     char* decrypted = decrypt(buffer, key);
                     std::cout << "Decrypted: " << decrypted << std::endl;
-
                 }
-              
             }
+
             else if (decryptMode == 2) {
 
                 std::cout << "Enter a text: ";
@@ -66,13 +63,11 @@ int main() {
                 std::cout << "Decrypted: " << decrypted << std::endl;
             }
 
-
-
             delete[] decrypted;
             decrypted = nullptr;
         }
         else {
-            std::cerr << "Invalid mode!" << std::endl;
+            std::cout << "Invalid mode!" << std::endl;
         }
     }
 
